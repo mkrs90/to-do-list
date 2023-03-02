@@ -82,6 +82,7 @@ function App();
     if (current view !== view clicked) {
         set View State to be view clicked.
         if (view clicked === Active) {
+            get the task by id(or key?) get status of active. Filter out the list so only those are displayed. 
             set view to active
         } else if (view clicked === completed) {
             set view to completed
@@ -110,6 +111,12 @@ function App();
                     setCompletedTaskCount(completedTaskCount - 1);
                 }
             update the state?
+
+
+    handleClose() {
+        when user clicks the x button the item will be removed from the list.
+        OnClick filter through the array. Find the index that matches the key given. array.splice(key, 1) to remove the one item from the array
+    }
             
 
     returns the jsx html layout for the page. 
