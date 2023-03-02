@@ -6,15 +6,24 @@ function App() {
     const [count, setCount] = useState([]);
     const [inputValue, setInputValue] = useState([]);
 
+
     function handleInputChange(event) {
+        console.log(event);
         setInputValue(event.target.value);
     }
 
-    function handleClick(event) {
+    function handleClick() {
         console.log("clicked");
         let newTask = [ ...task, inputValue ]
         setTask(newTask);
         setCount(newTask.length);
+    }
+
+    function handleClose() {
+        //this is where the X button functionality will live
+        console.log("close it");
+        setTask(task.filter(a => a.id !== task.id));
+
     }
 
 
@@ -30,10 +39,10 @@ function App() {
                 <button>Completed</button>
                 <button>Clear Completed</button>
             </div>
-            <div>
+            <div className="container">
                 <ul>
                     {task.map(task => {
-                        return <li key={task}><input type="checkbox"></input>{task}<span className="close">x</span></li>
+                        return <li key={task.id}><input type="checkbox" id="checkbox"></input>{task}<span className="close" onClick={handleClose}>x</span></li>
                     })}
                 </ul>
             </div>
