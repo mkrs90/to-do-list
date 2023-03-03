@@ -32,7 +32,7 @@ function App() {
 
     function handleClearCompleted() {
         //this is where the X button functionality will live
-        console.log("close it");
+        console.log("cleared!");
         let newArray = tasks.filter(a => a.completed === false)
         
         setTasks(newArray); 
@@ -54,6 +54,7 @@ function App() {
 
         // Set tasks to be the combination of old tasks plus the new checked task
         setTasks(tasks => [...newArray, task]);
+        setCount(newArray.length);
         
         // setTasks(list);
         // let completedTask = task.completed = true;
@@ -86,15 +87,17 @@ function App() {
 
     return (
         <div className="container">
-            <h1>To Do List</h1>
-            <h2>You have {count} items left to complete.</h2>
-            <input type="text" placeholder="What do you need to do?" onChange={handleInputChange}></input>
-            <button onClick={handleClick}>Add Task</button>
-            <div>
-                <button id="viewAll" onClick={viewAll}>All</button>
-                <button id="viewActive" onClick={viewActive}>Active</button>
-                <button id="viewCompleted" onClick={viewCompleted}>Completed</button>
-                <button onClick={handleClearCompleted}>Clear Completed</button>
+            <h1 className="text-center display-1">To Do List</h1>
+            <p className="text-center">You have {count} items left to complete.</p>
+            <div className="text-center m-3">
+                <input type="text" placeholder="What do you need to do?" onChange={handleInputChange}></input>
+                <button onClick={handleClick} className="ms-3">Add Task</button>
+            </div>
+            <div className="text-center">
+                <button id="viewAll" onClick={viewAll} className="m-2">All</button>
+                <button id="viewActive" onClick={viewActive} className="m-2">Active</button>
+                <button id="viewCompleted" onClick={viewCompleted} className="m-2">Completed</button>
+                <button onClick={handleClearCompleted} className="m-2">Clear Completed</button>
             </div>
             <div className="container">
                 <ul>
