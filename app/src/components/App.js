@@ -4,7 +4,6 @@ import "../index.css";
 function App() {
     const [tasks, setTasks] = useState([]);
     const [count, setCount] = useState([tasks.length]);
-    // const [status, setStatus] = useState([]);
     const [inputValue, setInputValue] = useState([]);
     const [viewActiveEnabled, setViewActiveEnabled] = useState(false);
     const [viewCompetedEnabled, setViewCompletedEnabled] = useState(false);
@@ -31,6 +30,15 @@ function App() {
         setCount(newArray.length -= 1);
     }
 
+    function handleClearCompleted() {
+        //this is where the X button functionality will live
+        console.log("cleared!");
+        let newArray = tasks.filter(a => a.completed === false)
+        
+        setTasks(newArray); 
+        setCount(newArray.length);
+    }
+
     function handleCheckbox(id) {
         console.log("I've been checked!")
         // find the task that got checked
@@ -46,7 +54,8 @@ function App() {
 
         // Set tasks to be the combination of old tasks plus the new checked task
         setTasks(tasks => [...newArray, task]);
-
+        setCount(newArray.length);
+        
         // setTasks(list);
         // let completedTask = task.completed = true;
         // setTasks([...tasks, completedTask])
@@ -58,52 +67,84 @@ function App() {
         //let activeArray = tasks.filter(b => b.completed === false);
         //setTasks(activeArray);
         document.getElementById("viewActive")
-        setViewActiveEnabled(!viewActiveEnabled);
+        setViewActiveEnabled(true);
+        setViewCompletedEnabled(false);
     }
 
     function viewCompleted() {
         console.log("viewing completed tasks");
-        setViewCompletedEnabled(!viewCompetedEnabled);
+        setViewCompletedEnabled(true);
+        setViewActiveEnabled(false);
+        
+    }
+
+    function viewAll() {
+        console.log("viewing all tasks");
+        setViewActiveEnabled(false);
+        setViewCompletedEnabled(false);
     }
 
 
     return (
-        <div>
-            <h1>To Do List</h1>
-            <h2>You have {count} items left to complete.</h2>
-            <input type="text" placeholder="What do you need to do?" onChange={handleInputChange}></input>
-            <button onClick={handleClick}>Add Task</button>
-            <div>
-                <button id="viewAll">All</button>
-                <button id="viewActive" onClick={viewActive}>Active</button>
-                <button id="viewCompleted" onClick={viewCompleted}>Completed</button>
-                <button>Clear Completed</button>
+        <div className="container">
+            <h1 className="text-center display-1">To Do List</h1>
+            <p className="text-center">You have {count} items left to complete.</p>
+            <div className="text-center m-3">
+                <input type="text" placeholder="What do you need to do?" onChange={handleInputChange}></input>
+                <button onClick={handleClick} className="ms-3">Add Task</button>
+            </div>
+            <div className="text-center">
+                <button id="viewAll" onClick={viewAll} className="m-2">All</button>
+                <button id="viewActive" onClick={viewActive} className="m-2">Active</button>
+                <button id="viewCompleted" onClick={viewCompleted} className="m-2">Completed</button>
+                <button onClick={handleClearCompleted} className="m-2">Clear Completed</button>
             </div>
             <div className="container">
                 <ul>
                     {tasks.map(task => {
                             if (viewActiveEnabled){
                                 if (task.completed === false){
-                                    return <li key={task.id}><input type="checkbox" onClick={() => handleCheckbox(task.id)} checked={task.completed}></input>{task.text}<span className="close" onClick={handleClose}>x</span></li>
+                                    return <li key={task.id} className={`${task.completed === true ? "text-decoration-line-through" : "text-decoration-none"}`}>
+                                                <input type="checkbox" onClick={() => handleCheckbox(task.id)} checked={task.completed}>
+                                                </input>
+                                                {task.text}
+                                                <span className="close" onClick={handleClose}>
+                                                x
+                                                </span>
+                                            </li>
                                 }
-                                // else
-                                // {
-                                //     return 
-                                // }
+                                else
+                                {
+                                    return null;
+                                }
 
                             } else if (viewCompetedEnabled) {
                                 if (task.completed === true) {
-                                    return <li key={task.id}><input type="checkbox" onClick={() => handleCheckbox(task.id)} checked={task.completed}></input>{task.text}<span className="close" onClick={handleClose}>x</span></li>
+                                    return <li key={task.id} className={`${task.completed === true ? "text-decoration-line-through" : "text-decoration-none"}`}>
+                                            <input type="checkbox" onClick={() => handleCheckbox(task.id)} checked={task.completed}>
+                                            </input>
+                                            {task.text}
+                                            <span className="close" onClick={handleClose}>
+                                            x
+                                            </span>
+                                        </li>
                                 }
-                                // else
-                                // {
-                                //     return
-                                // }
+                                else
+                                {
+                                    return null;
+                                }
                             }
 
                             else
                             {
-                                return <li key={task.id}><input type="checkbox" onClick={() => handleCheckbox(task.id)} checked={task.completed}></input>{task.text}<span className="close" onClick={handleClose}>x</span></li>
+                                return <li key={task.id} className={`${task.completed === true ? "text-decoration-line-through" : "text-decoration-none"}`}>
+                                            <input type="checkbox" onClick={() => handleCheckbox(task.id)} checked={task.completed}>
+                                            </input>
+                                            {task.text}
+                                            <span className="close" onClick={handleClose}>
+                                            x
+                                            </span>
+                                        </li>
                             }
                         
                     })}
