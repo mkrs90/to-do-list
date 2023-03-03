@@ -58,12 +58,19 @@ function App() {
         setCount(newArray.length);
     }
 
+
+    //on click of "Active" button it changes the view of the task items
+    //to only be those with a status of task.completed: false
+    //it's ran through an if statement in the html to only show those items
     function viewActive() {
         console.log("viewing Active tasks");
         setViewActiveEnabled(true);
         setViewCompletedEnabled(false);
     }
 
+    //on click of "Completed" button it changes the view of the task items
+    //to only be those with a status of task.completed: true
+    //it's ran through an if statement in the html to only show those items
     function viewCompleted() {
         console.log("viewing completed tasks");
         setViewCompletedEnabled(true);
@@ -71,12 +78,17 @@ function App() {
         
     }
 
+    //on click of "All" button it changes the view of the task items
+    //to be both those with a status of task.completed: true && false
+    //it's ran through an if statement in the html as the else statement
     function viewAll() {
         console.log("viewing all tasks");
         setViewActiveEnabled(false);
         setViewCompletedEnabled(false);
     }
 
+    //on click of "Complete All" 
+    //it will check all of the tasks and set all statues as task.completed = true;
     function completeAll() {
         console.log("get it done");
        
@@ -100,6 +112,9 @@ function App() {
             </div>
             <div className="container">
                 <ul>
+                    {/* maps over the tasks array. If the viewActive is enabled (set to true) will will show only active items. Else if the viewCompleted is enabled (set to true and active false) 
+                    it will show only the completed items. ELSE it will show all items. Views are controlled by the above buttons. Each li item contains a terniary statement to mark through 
+                    completed items. A input checkbox that runs the handleCheckbox function that switches the task.completed state and a span that houses the "close" button functionality*/}
                     {tasks.map(task => {
                             if (viewActiveEnabled){
                                 if (task.completed === false){
