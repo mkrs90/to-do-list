@@ -8,12 +8,14 @@ function App() {
     const [viewActiveEnabled, setViewActiveEnabled] = useState(false);
     const [viewCompetedEnabled, setViewCompletedEnabled] = useState(false);
 
-
+    //sets the input value to users input
     function handleInputChange(event) {
         console.log(event);
         setInputValue(event.target.value);
     }
 
+    //on click of the add item button a new task object is made setting up it's initial state. 
+    //Count is also increased on click
     function handleClick() {
         console.log("clicked");
         let newTask = {text:inputValue, id:Date.now(), completed: false}
@@ -21,56 +23,54 @@ function App() {
         setCount(tasks.length + 1);
     }
 
+    //On click of the "X" button after an item had been created it filters the tasks array based on the id of the items
+    //and returns a list that no longer contains the task that was "closed"
+    //decreases the count by one
     function handleClose() {
-        //this is where the X button functionality will live
         console.log("close it");
-        let newArray = tasks.filter(a => a.id !== tasks.id)
-        
+        let newArray = tasks.filter(a => a.id !== tasks.id);
         setTasks(newArray); 
         setCount(newArray.length -= 1);
     }
 
+    //function filters the tasks array based on completed status. Will only return tasks that have a key:value pair of
+    //false meaning they are still active tasks
+    //updates the count based on array length after clear
     function handleClearCompleted() {
-        //this is where the X button functionality will live
         console.log("cleared!");
-        let newArray = tasks.filter(a => a.completed === false)
-        
+        let newArray = tasks.filter(a => a.completed === false);
         setTasks(newArray); 
         setCount(newArray.length);
     }
 
+    //function finds the task that was checked
+    //it switches the task.complete to be the opposite of its current state
+    //filters through the task array based on the id of the task and returns an array 
+    //that does not include the tasks whose id is not id
     function handleCheckbox(id) {
         console.log("I've been checked!")
-        // find the task that got checked
         let task = tasks.find((element) => {
             return element.id === id;
           })
-
-        // Update the completed status
         task.completed = !task.completed;
-
-        // Throw away the old version of the that got checked
         let newArray = tasks.filter(a => a.id !== id)
-
-        // Set tasks to be the combination of old tasks plus the new checked task
         setTasks(tasks => [...newArray, task]);
         setCount(newArray.length);
-        
-        // setTasks(list);
-        // let completedTask = task.completed = true;
-        // setTasks([...tasks, completedTask])
-        // console.log(task.completed);
     }
 
+
+    //on click of "Active" button it changes the view of the task items
+    //to only be those with a status of task.completed: false
+    //it's ran through an if statement in the html to only show those items
     function viewActive() {
         console.log("viewing Active tasks");
-        //let activeArray = tasks.filter(b => b.completed === false);
-        //setTasks(activeArray);
-        document.getElementById("viewActive")
         setViewActiveEnabled(true);
         setViewCompletedEnabled(false);
     }
 
+    //on click of "Completed" button it changes the view of the task items
+    //to only be those with a status of task.completed: true
+    //it's ran through an if statement in the html to only show those items
     function viewCompleted() {
         console.log("viewing completed tasks");
         setViewCompletedEnabled(true);
@@ -78,10 +78,20 @@ function App() {
         
     }
 
+    //on click of "All" button it changes the view of the task items
+    //to be both those with a status of task.completed: true && false
+    //it's ran through an if statement in the html as the else statement
     function viewAll() {
         console.log("viewing all tasks");
         setViewActiveEnabled(false);
         setViewCompletedEnabled(false);
+    }
+
+    //on click of "Complete All" 
+    //it will check all of the tasks and set all statues as task.completed = true;
+    function completeAll() {
+        console.log("get it done");
+       
     }
 
 
@@ -98,9 +108,13 @@ function App() {
                 <button id="viewActive" onClick={viewActive} className="m-2">Active</button>
                 <button id="viewCompleted" onClick={viewCompleted} className="m-2">Completed</button>
                 <button onClick={handleClearCompleted} className="m-2">Clear Completed</button>
+                <button onClick={completeAll} className="m-2">Complete All</button>
             </div>
             <div className="container">
                 <ul>
+                    {/* maps over the tasks array. If the viewActive is enabled (set to true) will will show only active items. Else if the viewCompleted is enabled (set to true and active false) 
+                    it will show only the completed items. ELSE it will show all items. Views are controlled by the above buttons. Each li item contains a terniary statement to mark through 
+                    completed items. A input checkbox that runs the handleCheckbox function that switches the task.completed state and a span that houses the "close" button functionality*/}
                     {tasks.map(task => {
                             if (viewActiveEnabled){
                                 if (task.completed === false){
